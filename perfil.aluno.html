@@ -1,0 +1,148 @@
+<html><head><base href="/" /><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfil Estudante de Cabeleireiro</title>
+<link rel="stylesheet" href="styles1.css">
+</head>
+<body>
+<div class="container">
+  <div class="profile">
+    <div class="profile-header">
+      <div class="profile-pic">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+      </div>
+      <h1 class="profile-name">Maria Silva</h1>
+      <h2 class="profile-title">Estudante de Cabeleireiro Profissional</h2>
+    </div>
+
+    <div class="skills-section">
+      <h3>Habilidades</h3>
+      <div class="skill-bars">
+        <div class="skill-bar">
+          <div class="skill-progress" style="width: 90%">
+            <span class="skill-name">Cortes Femininos</span>
+          </div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-progress" style="width: 85%">
+            <span class="skill-name">Coloração</span>
+          </div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-progress" style="width: 75%">
+            <span class="skill-name">Penteados</span>
+          </div>
+        </div>
+        <div class="skill-bar">
+          <div class="skill-progress" style="width: 70%">
+            <span class="skill-name">Tratamentos Capilares</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="experience-section">
+      <h3>Experiência Prática</h3>
+      <div class="experience-item">
+        <h4 class="experience-title">Estágio - Salão Beleza Natural</h4>
+        <p>Auxiliar em procedimentos de coloração e mechas</p>
+        <p>Prática supervisionada em cortes básicos</p>
+      </div>
+      <div class="experience-item">
+        <h4 class="experience-title">Projeto Social - Cortes Solidários</h4>
+        <p>Voluntária em projeto comunitário</p>
+        <p>Experiência com diversos tipos de cabelo</p>
+      </div>
+    </div>
+
+    <div class="certificate-section">
+      <h3>Certificados</h3>
+      <button class="download-button" onclick="generateCertificate()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+        </svg>
+        Baixar Certificado
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Animação das barras de habilidades
+  const skillBars = document.querySelectorAll('.skill-progress');
+  
+  skillBars.forEach(bar => {
+    const width = bar.style.width;
+    bar.style.width = '0';
+    
+    setTimeout(() => {
+      bar.style.width = width;
+    }, 500);
+  });
+  
+  // Adiciona interatividade aos itens de experiência
+  const experienceItems = document.querySelectorAll('.experience-item');
+  
+  experienceItems.forEach(item => {
+    item.addEventListener('mouseover', () => {
+      item.style.transform = 'scale(1.02)';
+      item.style.transition = 'transform 0.3s ease';
+    });
+    
+    item.addEventListener('mouseout', () => {
+      item.style.transform = 'scale(1)';
+    });
+  });
+});
+
+function generateCertificate() {
+  // Cria um elemento canvas para gerar o certificado
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 1200;
+  canvas.height = 800;
+
+  // Define o estilo do certificado
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Adiciona borda
+  ctx.strokeStyle = '#9370DB';
+  ctx.lineWidth = 20;
+  ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+
+  // Configura o texto
+  ctx.fillStyle = '#333';
+  ctx.textAlign = 'center';
+  
+  // Título
+  ctx.font = 'bold 50px Segoe UI';
+  ctx.fillText('Certificado de Conclusão', canvas.width/2, 200);
+
+  // Texto do certificado
+  ctx.font = '30px Segoe UI';
+  ctx.fillText('Este certificado é conferido a', canvas.width/2, 300);
+  
+  // Nome do aluno
+  ctx.font = 'bold 40px Segoe UI';
+  ctx.fillText('Maria Silva', canvas.width/2, 380);
+  
+  // Descrição
+  ctx.font = '30px Segoe UI';
+  ctx.fillText('pela conclusão do curso de Cabeleireiro Profissional', canvas.width/2, 460);
+  
+  // Data
+  const data = new Date().toLocaleDateString('pt-BR');
+  ctx.font = '25px Segoe UI';
+  ctx.fillText(`Data de Emissão: ${data}`, canvas.width/2, 600);
+
+  // Converte o canvas para imagem e faz o download
+  const link = document.createElement('a');
+  link.download = 'Certificado_Cabeleireiro.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+</script>
+</body></html>

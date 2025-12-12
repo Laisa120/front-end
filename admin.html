@@ -1,0 +1,232 @@
+<html><head><base href="." />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Administrativo de Cursos</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="mobile-header">
+  <h2>Admin Cursos</h2>
+  <button class="menu-toggle" onclick="toggleMenu()">
+    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M3 12h18M3 6h18M3 18h18"/>
+    </svg>
+  </button>
+</div>
+
+<div class="dashboard">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>Admin Cursos</h2>
+      <button class="menu-toggle" onclick="toggleMenu()">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <nav>
+      <div class="menu-item" onclick="showView('dashboard')">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M3 9h18"/>
+          <path d="M9 21V9"/>
+        </svg>
+        Dashboard
+      </div>
+      <div class="menu-item" onclick="showView('cursos')">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        Cursos
+      </div>
+      <div class="menu-item" onclick="showView('alunos')">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Alunos
+      </div>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <!-- Dashboard View -->
+    <div id="dashboard" class="view active">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Total de Cursos</h3>
+          <div class="value">42</div>
+        </div>
+        <div class="stat-card">
+          <h3>Alunos Ativos</h3>
+          <div class="value">1,234</div>
+        </div>
+        <div class="stat-card">
+          <h3>Receita Mensal</h3>
+          <div class="value">R$ 45,678</div>
+        </div>
+        <div class="stat-card">
+          <h3>Taxa de Conclusão</h3>
+          <div class="value">87%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cursos View -->
+    <div id="cursos" class="view">
+      <div class="courses-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome do Curso</th>
+              <th>Instrutor</th>
+              <th>Alunos</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="coursesTableBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Alunos View -->
+    <div id="alunos" class="view">
+      <div class="alunos-grid" id="alunosGrid">
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const courses = [
+  {
+    name: "JavaScript Avançado",
+    instructor: "João Silva",
+    students: 156,
+    status: "active"
+  },
+  {
+    name: "Python para Iniciantes",
+    instructor: "Maria Santos",
+    students: 234,
+    status: "active"
+  },
+  {
+    name: "React Native",
+    instructor: "Pedro Costa",
+    students: 89,
+    status: "draft"
+  },
+  {
+    name: "UX/UI Design",
+    instructor: "Ana Oliveira",
+    students: 167,
+    status: "active"
+  }
+];
+
+const alunos = [
+  { name: "Ana Silva", email: "ana@email.com", progress: "75%", coursesEnrolled: 3 },
+  { name: "João Santos", email: "joao@email.com", progress: "90%", coursesEnrolled: 2 },
+  { name: "Maria Oliveira", email: "maria@email.com", progress: "45%", coursesEnrolled: 1 },
+  { name: "Pedro Costa", email: "pedro@email.com", progress: "60%", coursesEnrolled: 4 }
+];
+
+function renderCourses() {
+  const tableBody = document.getElementById('coursesTableBody');
+  tableBody.innerHTML = '';
+
+  courses.forEach(course => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${course.name}</td>
+      <td>${course.instructor}</td>
+      <td>${course.students}</td>
+      <td><span class="status status-${course.status}">
+        ${course.status === 'active' ? 'Ativo' : 'Rascunho'}
+      </span></td>
+      <td>
+        <button class="action-btn edit-btn" onclick="editCourse('${course.name}')">Editar</button>
+        <button class="action-btn delete-btn" onclick="deleteCourse('${course.name}')">Excluir</button>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+function renderAlunos() {
+  const alunosGrid = document.getElementById('alunosGrid');
+  alunosGrid.innerHTML = '';
+
+  alunos.forEach(aluno => {
+    const card = document.createElement('div');
+    card.className = 'aluno-card';
+    card.innerHTML = `
+      <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="currentColor">
+        <circle cx="30" cy="30" r="25" stroke-width="2"/>
+        <circle cx="30" cy="25" r="8" stroke-width="2"/>
+        <path d="M15 45c0-8.284 6.716-15 15-15s15 6.716 15 15" stroke-width="2"/>
+      </svg>
+      <h3>${aluno.name}</h3>
+      <div class="aluno-info">Email: ${aluno.email}</div>
+      <div class="aluno-info">Progresso: ${aluno.progress}</div>
+      <div class="aluno-info">Cursos Matriculados: ${aluno.coursesEnrolled}</div>
+    `;
+    alunosGrid.appendChild(card);
+  });
+}
+
+function editCourse(courseName) {
+  alert(`Editando curso: ${courseName}`);
+}
+
+function deleteCourse(courseName) {
+  if (confirm(`Deseja realmente excluir o curso: ${courseName}?`)) {
+    const index = courses.findIndex(course => course.name === courseName);
+    if (index !== -1) {
+      courses.splice(index, 1);
+      renderCourses();
+    }
+  }
+}
+
+function toggleMenu() {
+  const sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('active');
+}
+
+function showView(viewId) {
+  // Hide all views
+  document.querySelectorAll('.view').forEach(view => {
+    view.classList.remove('active');
+  });
+  
+  // Show selected view
+  document.getElementById(viewId).classList.add('active');
+  
+  // If mobile, close menu after selection
+  if (window.innerWidth <= 768) {
+    toggleMenu();
+  }
+
+  // Render appropriate content
+  if (viewId === 'cursos') {
+    renderCourses();
+  } else if (viewId === 'alunos') {
+    renderAlunos();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderCourses();
+  renderAlunos();
+});
+</script>
+
+</body>
+</html>
